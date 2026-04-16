@@ -51,12 +51,10 @@ namespace TestProject
         [Fact]
         public void Progress_Cannot_Exceed_Required_Amount()
         {
-            //Arrange
             var quest = CreateQuest();
-            //Act
-            quest.ProgressObjective("Kill Goblins", 10);
-            //Assert
-            Assert.Equal(5, quest.GetObjective("Kill Goblins").CurrentAmount);
+
+            Assert.Throws<InvalidOperationException>(() =>
+                quest.ProgressObjective("Kill Goblins", 10));
         }
 
         [Fact]
@@ -77,6 +75,16 @@ namespace TestProject
             //Act//Assert
             Assert.Throws<Exception>(() =>
                 quest.ProgressObjective("Kill Goblins", -1));
+        }
+
+        [Fact]
+        public void Progress_Throws_Exception_If_Too_Much()
+        {
+            var quest = new Quest("Goblin Slayer");
+            quest.AddObjective("Kill Goblins", 5);
+        
+            Assert.Throws<InvalidOperationException>(() =>
+                quest.ProgressObjective("Kill Goblins", 6));
         }
 
         private Quest CreateQuest()

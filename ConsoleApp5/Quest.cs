@@ -54,6 +54,10 @@
                 throw new Exception();
 
             var obj = GetObjective(name);
+
+            if (obj.CurrentAmount + amount > obj.RequiredAmount)
+                throw new InvalidOperationException();
+
             obj.CurrentAmount += amount;
         }
     }
