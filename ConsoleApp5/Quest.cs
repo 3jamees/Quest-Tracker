@@ -3,6 +3,7 @@
     public class Quest
     {
         private List<Objective> objectives = new List<Objectives>();
+        private bool turnedIn = false;
 
         public Quest(string name)
         {
@@ -13,13 +14,22 @@
         {
             get
             {
+                if (!turnedIn)
+                    return false;
+                
                 foreach (var obj in objectives)
                 {
                     if (obj.CurrentAmount < obj.RequiredAmount)
                         return false;
                 }
+                
                 return objectives.Count > 0;
             }
+        }
+
+        public void TurnIn()
+        {
+            turnedIn = true;
         }
 
         public void AddObjective(string name, int requiredAmount)
